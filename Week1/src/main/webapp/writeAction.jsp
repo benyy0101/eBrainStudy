@@ -30,14 +30,13 @@
                 ) {
             PrintWriter pw = response.getWriter();
             pw.println("<script>");
-            pw.println("alert(입력값이 맞지 않습니다.);");
+            pw.println("alert('입력값이 맞지 않습니다.');");
             pw.println("history.back()");
             pw.println("</script>");
         }
         else{
 
             PostDAO postDAO = new PostDAO();
-//            System.out.println(post.getTitle());
             int result = postDAO.insert(post);
             if(result != -1){
                 PrintWriter pw = response.getWriter();

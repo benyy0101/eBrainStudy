@@ -66,7 +66,7 @@
                 <tr>
                     <th>내용</th>
                     <div class = "form-group">
-                        <td><textarea type = "text" class = "form-control" name = "content" maxlength = "500" rows = "5" ></textarea></td>
+                        <td><textarea type = "text" class = "form-control" name = "content" maxlength = "500" rows = "10" ></textarea></td>
                     </div>
                 </tr>
 
