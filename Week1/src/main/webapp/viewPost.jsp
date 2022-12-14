@@ -15,6 +15,7 @@
 <head>
     <title>Read a post!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel = "stylesheet" href = "css/bootstrap.css">
 </head>
 <body>
@@ -75,7 +76,39 @@
 
 </table>
 <div class = "container">
-    <button class = "btn btn-dark" onclick = "location.href = 'updatePost.jsp?postId=<%=post.getPostId()%>'">수정</button>
+    <button type = "button" class = "btn btn-dark" data-bs-toggle = "modal" data-bs-target="#authModal">수정하기</button>
+
+    <%--    비밀번호 확인 모달 띄우기--%>
+    <div class = "modal fade" id="authModal" tabindex="-1" role = "dialog" aria-labelledby="authModalLabel" aria-hidden = "true">
+        <div class = "modal-dialog" role = "document">
+            <div class = "modal-content">
+                <form action = "authAction.jsp">
+                    <div class = "modal-header">
+                        <h5 class = "modal-title" id = "authModalTitle">비밀번호 확인</h5>
+                    </div>
+                    <div class = "modal-body">
+                        <div class = "form-group">
+                            <div>비밀번호를 입력해주세요</div>
+                            <input type = "password" class = "form-control" name = "auth" >
+                        </div>
+                    </div>
+                    <div class = "modal-footer">
+                        <input type = "hidden" name = "postId" value = "<%=postId%>">
+                        <input type = "submit" class = "btn btn-dark" value = "확인">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
+<script src="js/bootstrap.bundle.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
 </html>

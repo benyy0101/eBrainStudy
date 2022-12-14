@@ -24,7 +24,7 @@
 %>
 <div class = "container">
     <div class = "jumbotron">
-        <h1 class = "display-4">게시판 - 수정</h1>
+        <h2 class = "display-4">게시판 - 수정</h2>
     </div>
 </div>
 
@@ -88,7 +88,7 @@
         <div class = "container">
             <div class = "row">
                 <div class = "col form-group">
-                    <input type = "submit" class = "btn btn-dark form-control" value = "수정"\>
+                    <input type = "submit" class = "btn btn-dark" value = "수정"\>
                 </div>
                 <div class = "col">
                     <button class = "btn">취소</button>

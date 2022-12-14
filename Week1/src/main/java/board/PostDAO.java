@@ -52,7 +52,6 @@ public class PostDAO {
         }
         return -1;
     }
-
     public int insert(Post post){
         String query = "insert into post values (?,?,?,?,?,?,?,?,?)";
         try{
@@ -75,11 +74,11 @@ public class PostDAO {
         return -1;
     }
     public ArrayList<Post> getList(int pageNum){
-        String sql = "Select * from post where postId < ? order by postid desc limit 5";
+        String sql = "Select * from post where postId < ? order by postid desc limit 10";
         ArrayList<Post> list = new ArrayList<Post>();
         try{
             PreparedStatement ps = connection.prepareStatement(sql);
-            int pageSize = getId() - (pageNum - 1) * 5;
+            int pageSize = getId() - (pageNum - 1) * 10;
             ps.setInt(1,pageSize);
             rs = ps.executeQuery();
             while(rs.next()){
@@ -104,6 +103,113 @@ public class PostDAO {
 
         }catch(Exception e){
             e.printStackTrace();
+        }
+        return list;
+    }
+    public ArrayList<Post> getSearchList(int pageNum,String category, String keyword){
+        ArrayList<Post> list = new ArrayList<Post>();
+        String sql = "";
+        if(category.equals("all")){
+            System.out.println("HI");
+            sql = "Select * from post where postId < ? and (content like ? or title like ? or creator like ?) order by postid desc limit 10";
+            try{
+                PreparedStatement ps = connection.prepareStatement(sql);
+                int pageSize = getId() - (pageNum - 1) * 10;
+                ps.setInt(1,pageSize);
+                ps.setString(2, "%" + keyword + "%");
+                ps.setString(3, "%" + keyword + "%");
+                ps.setString(4, "%" + keyword + "%");
+                rs = ps.executeQuery();
+                while(rs.next()){
+                    Post post = new Post();
+                    post.setPostId(rs.getInt(1));
+                    post.setCategory(rs.getString(2));
+                    post.setCreator(rs.getString(3));
+                    post.setPwd(rs.getString(4));
+                    post.setTitle(rs.getString(5));
+                    post.setContent(rs.getString(6));
+                    post.setCreatedDate(rs.getString(7).substring(0,11));
+                    String rawEditedDate = rs.getString(8);
+                    if(rawEditedDate != null){
+                        post.setEditedDate(rawEditedDate.substring(0,11));
+                    }
+                    else{
+                        post.setEditedDate("-");
+                    }
+                    post.setViews(rs.getInt(9));
+                    list.add(post);
+                }
+
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+        else if (keyword == "") {
+            sql = "Select * from post where postId < ? and category = ? order by postid desc limit 10";
+            try{
+                PreparedStatement ps = connection.prepareStatement(sql);
+                int pageSize = getId() - (pageNum - 1) * 10;
+                ps.setInt(1,pageSize);
+                ps.setString(2, category);
+
+                rs = ps.executeQuery();
+                while(rs.next()){
+                    Post post = new Post();
+                    post.setPostId(rs.getInt(1));
+                    post.setCategory(rs.getString(2));
+                    post.setCreator(rs.getString(3));
+                    post.setPwd(rs.getString(4));
+                    post.setTitle(rs.getString(5));
+                    post.setContent(rs.getString(6));
+                    post.setCreatedDate(rs.getString(7).substring(0,11));
+                    String rawEditedDate = rs.getString(8);
+                    if(rawEditedDate != null){
+                        post.setEditedDate(rawEditedDate.substring(0,11));
+                    }
+                    else{
+                        post.setEditedDate("-");
+                    }
+                    post.setViews(rs.getInt(9));
+                    list.add(post);
+                }
+
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        } else{
+            sql = "Select * from post where postId < ? and (content like ? or title like ? or creator like ?) and category = ? order by postid desc limit 10";
+            try{
+                PreparedStatement ps = connection.prepareStatement(sql);
+                int pageSize = getId() - (pageNum - 1) * 10;
+                ps.setInt(1,pageSize);
+                ps.setString(2, "%" + keyword + "%");
+                ps.setString(3, "%" + keyword + "%");
+                ps.setString(4, "%" + keyword + "%");
+                ps.setString(5, category);
+                rs = ps.executeQuery();
+                while(rs.next()){
+                    Post post = new Post();
+                    post.setPostId(rs.getInt(1));
+                    post.setCategory(rs.getString(2));
+                    post.setCreator(rs.getString(3));
+                    post.setPwd(rs.getString(4));
+                    post.setTitle(rs.getString(5));
+                    post.setContent(rs.getString(6));
+                    post.setCreatedDate(rs.getString(7).substring(0,11));
+                    String rawEditedDate = rs.getString(8);
+                    if(rawEditedDate != null){
+                        post.setEditedDate(rawEditedDate.substring(0,11));
+                    }
+                    else{
+                        post.setEditedDate("-");
+                    }
+                    post.setViews(rs.getInt(9));
+                    list.add(post);
+                }
+
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
         return list;
     }
@@ -185,5 +291,22 @@ public class PostDAO {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    public boolean authentication(int postId, String auth){
+        String query = "select pwd from post where postId = ?";
+        try{
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1,postId);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                String temp = rs.getString("pwd");
+                return auth.equals(temp);
+            }
+            return false;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 }

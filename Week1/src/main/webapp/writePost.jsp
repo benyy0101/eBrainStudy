@@ -16,10 +16,10 @@
 <body>
     <div class = "container">
         <div class = "jumbotron">
-            <h1 class = "display-4">게시판 - 등록</h1>
+            <h2 class = "display-4">게시판 - 등록</h2>
         </div>
     </div>
-
+    <br>
     <div class = "container">
         <form method = "post" action = "writeAction.jsp">
             <table class = "table">
@@ -76,18 +76,12 @@
 <%--                </tr>--%>
                 </tbody>
             </table>
-
             <div class = "container">
-                <div class = "row">
-                    <div class = "col form-group">
-                        <input type = "submit" class = "btn btn-dark form-control" value = "등록"\>
-                    </div>
-                    <div class = "col">
-                        <button class = "btn">취소</button>
-                    </div>
-                </div>
+                <input type = "submit" class = "btn btn-dark" value = "등록"\>
+                <button class = "btn" onclick = "location.href = 'index.jsp'">취소</button>
             </div>
         </form>
+
     </div>
 </body>
 </html>

@@ -2,8 +2,7 @@
 <%@ page import = "board.PostDAO " %>
 <%@ page import = "board.Post " %>
 <%@ page import = "java.util.ArrayList" %>
-
-
+<%@ page import="java.util.Map" %>
 
 <!DOCTYPE html>
 <html>
@@ -31,33 +30,43 @@
 %>
 <div class ="container">
     <header>
-        <h1 class = "display-4">자유 게시판 - 목록</h1>
+        <h2 class = "display-4">자유 게시판 - 목록</h2><br>
     </header>
 </div>
 
 <%--검색창: 등록일, 카테고리, 검색어 순으로--%>
-<div class = "container">
-    <div class = "row">
-        <div class = "col">
-            <span>등록일</span>
-            <input type = "date" id = "startDate ">
-            <span> ~ </span>
-            <input type = "date" id = "endDate ">
-
-            <select>
-                <option value = "Java">Java</option>
-                <option value = "Javascript">Javascript</option>
-                <option value = "Python">Python</option>
-                <option value = "Database">Database</option>
-            </select>
-
-            <input type = "text" id = "keyword" maxlength="20" size = "20">
-            <input type = "button" class = "btn btn-dark" id = "submit" value = "검색">
-        </div>
+<form method = "post" action = "searchPost.jsp">
+    <div class = "container">
+        <table>
+            <tbody>
+            <tr>
+<%--                <td>등록일</td>--%>
+<%--                <td><input type = "date" name = "startDate" class = "form-control"></td>--%>
+<%--                <td>~</td>--%>
+<%--                <td><input type = "date" name = "endDate" class = "form-control"></td>--%>
+                <td>
+                    <select class = "form-control" name = "category">
+                        <option value = "all" selected>전체</option>
+                        <option value = "Java">Java</option>
+                        <option value = "Javascript">Javascript</option>
+                        <option value = "Python">Python</option>
+                        <option value = "Database">Database</option>
+                    </select>
+                </td>
+                <td>
+                    <input type = "text" name = "keyword" maxlength="20" size = "20" class = "form-control">
+                </td>
+                <td>
+                    <input type = "submit" class = "col btn btn-dark form-control" value = "검색">
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-</div>
 
+</form>
 <%--총 게시글--%>
+<br>
 <div class = "container">
     <div class = "row">
         <%
@@ -72,7 +81,7 @@
 <div class = "container">
     <table class = "table table-hover" style = "text-align: center; border: 1px ">
         <thead>
-            <tr>
+            <tr class = "text-light bg-dark">
                 <th> 카테고리 </th>
                 <th> 제목 </th>
                 <th> 작성자 </th>
@@ -90,7 +99,7 @@
             for(int i = 0; i < list.size(); i++) {
                 %><tr onclick = "location.href = 'viewPost.jsp?postId=<%=list.get(i).getPostId()%>'">
                     <td><%= list.get(i).getCategory()%></td>
-                    <td><%= list.get(i).getTitle()%></td>
+                    <td width="50%"><%= list.get(i).getTitle()%></td>
                     <td><%= list.get(i).getCreator()%></td>
                     <td><%= list.get(i).getViews()%></td>
                     <td><%= list.get(i).getCreatedDate()%></td>
@@ -103,41 +112,43 @@
     </table>
 
     <%-- Pagination   --%>
-    <%
-        if(pageNum == 1){%>
-    <button disabled type = "button" class = "btn btn-success">Previous</button>
-    <%
+    <div class = "d-flex justify-content-center ">
+        <%
+            if(pageNum == 1){%>
+        <button disabled type = "button" class = "btn btn-dark">Previous</button>
+        <%
         }else{
-            %>
-    <button type = "button" class = "btn btn-success" onclick = "location.href = 'index.jsp?pageNum=<%=pageNum-1%>'">Previous</button>
-    <%
-        }
-    %>
-    <%
-        int lastPage = (totalPost/ 5) + 1;
-        for ( int i = 1; i <= lastPage ; i++){
+        %>
+        <button type = "button" class = "btn btn-dark" onclick = "location.href = 'index.jsp?pageNum=<%=pageNum-1%>'">Previous</button>
+        <%
+            }
+        %>
+        <%
+            int lastPage = (int)Math.ceil((double)totalPost/ 10);
 
-    %><button type = "button" class = "btn" onclick="location.href = 'index.jsp?pageNum=<%=i%>'"><%=i%></button>
-    <%
-        }
-    %>
-    <%
-        if(pageNum == lastPage){%>
-    <button disabled type = "button" class = "btn btn-success">Next</button>
-    <%
-    }else{
-    %>
-    <button type = "button" class = "btn btn-success" onclick="location.href = 'index.jsp?pageNum=<%=pageNum+1%>'">Next</button>
-    <%
-        }
-    %>
+            for ( int i = 1; i <= lastPage ; i++){
 
+        %><button type = "button" class = "btn" onclick="location.href = 'index.jsp?pageNum=<%=i%>'"><%=i%></button>
+        <%
+            }
+        %>
+        <%
+            if(pageNum == lastPage){%>
+        <button disabled type = "button" class = "btn btn-dark">Next</button>
+        <%
+        }else{
+        %>
+        <button type = "button" class = "btn btn-dark" onclick="location.href = 'index.jsp?pageNum=<%=pageNum+1%>'">Next</button>
+        <%
+            }
+        %>
+    </div>
 </div>
-
+<br>
 <div class = "container">
     <button type = "button" class = "btn btn-dark" id = "post" onclick = "location.href = 'writePost.jsp'">글쓰기</button>
 </div>
-
+<br>
 
 </body>
 </html>
